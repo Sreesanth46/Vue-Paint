@@ -10,6 +10,10 @@
             >
                 <Icon :icon="data.icon" />
             </div>
+            <div class="tool">
+                <Icon icon="mdi:color" />
+                <input type="color" :value="`white`" @change="strokeColor" />
+            </div>
         </div>
     </div>
 </template>data
@@ -17,8 +21,10 @@
 <script setup>
 import { Icon } from "@iconify/vue";
 import { useToolStore } from "../stores/tool";
+import { useStrokeStore } from "../stores/stroke";
 
 const tool = useToolStore();
+const stroke = useStrokeStore();
 
 const icons = [
     {
@@ -53,6 +59,10 @@ const icons = [
 
 function onClick(button) {
     tool.updateTool(button.title);
+}
+
+function strokeColor(event) {
+    stroke.updateStrokeColor(event.target.value);
 }
 </script>
 
