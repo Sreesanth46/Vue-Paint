@@ -10,8 +10,10 @@ import { ref, onMounted } from "vue";
 import { storeToRefs } from "pinia";
 import { useToolStore } from "../stores/tool";
 import { useStrokeStore } from "../stores/stroke";
+import { useBackgroundStore } from "../stores/background";
 const { selectedTool } = storeToRefs(useToolStore());
 const { stroke } = useStrokeStore();
+const { background } = useBackgroundStore();
 
 const refCanvas = ref(null);
 let canvas;
@@ -45,6 +47,13 @@ onMounted(() => {
     canvas.on("before:transform", () => objectModified());
     canvas.on("before:selection:cleared", () => selectionCleared());
     canvas.on("mouse:wheel", (event) => mouseWheel(event));
+});
+
+document.addEventListener("keydown", (e) => {
+    if (e.key == "Delete") {
+        let activeObject = canvas.getActiveObject();
+        canvas.remove(activeObject);
+    }
 });
 
 function mouseDown(event) {
