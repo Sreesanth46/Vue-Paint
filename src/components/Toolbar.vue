@@ -2,11 +2,11 @@
     <div class="toolbar-container">
         <div class="tools-box">
             <div
-                class="tool"
                 v-for="(data, index) in icons"
                 :key="index"
                 :title="data.title"
                 @click="onClick(data)"
+                class="tool"
             >
                 <Icon :icon="data.icon" />
             </div>
@@ -25,6 +25,7 @@ import { useStrokeStore } from "../stores/stroke";
 
 const tool = useToolStore();
 const stroke = useStrokeStore();
+let selectedTool = "none";
 
 const icons = [
     {
@@ -58,6 +59,11 @@ const icons = [
 ];
 
 function onClick(button) {
+    if (selectedTool == button.title) {
+        selectedTool = "none";
+    } else {
+        selectedTool = button.title;
+    }
     tool.updateTool(button.title);
 }
 
@@ -87,11 +93,20 @@ function strokeColor(event) {
 }
 
 .tool {
+    display: grid;
+    place-items: center;
+    font-size: xx-large;
+    cursor: pointer;
     width: 60px;
     height: 60px;
     margin-top: 10px;
     border-radius: 8px;
     background: #d9d9d9;
     box-shadow: 7px 7px 14px #ababab, -7px -7px 14px #ffffff;
+}
+
+.active {
+    background: red !important;
+    color: red;
 }
 </style>

@@ -169,7 +169,7 @@ function objectModified() {
 }
 
 function mouseWheel(event) {
-    if (selectedTool === "Zoom") {
+    if (selectedTool == "Zoom") {
         let delta = event.e.deltaY;
         let zoom = canvas.getZoom();
         zoom *= 0.999 ** delta;
