@@ -6,14 +6,14 @@
 
 <script setup>
 import { fabric } from "fabric";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { useToolStore } from "../stores/tool";
 import { useStrokeStore } from "../stores/stroke";
 import { useBackgroundStore } from "../stores/background";
 const { selectedTool } = storeToRefs(useToolStore());
 const { stroke } = useStrokeStore();
-const { background } = useBackgroundStore();
+const { backgroundColor } = storeToRefs(useBackgroundStore());
 
 const refCanvas = ref(null);
 let canvas;
@@ -48,6 +48,14 @@ onMounted(() => {
     canvas.on("before:selection:cleared", () => selectionCleared());
     canvas.on("mouse:wheel", (event) => mouseWheel(event));
 });
+
+watch(
+    () => backgroundColor.value,
+    (newBg) => {
+        canvas.backgroundColor = newBg;
+        canvas.renderAll();
+    }
+);
 
 document.addEventListener("keydown", (e) => {
     if (e.key == "Delete") {
