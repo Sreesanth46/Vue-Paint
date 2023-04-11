@@ -1,62 +1,66 @@
 <template>
     <div class="toolbar-container">
         <div class="tools-box">
-            <div class="tool" v-for="(data, index) in icons" :key="index">
-                <span class="icons">
-                    <Icon :icon="data.icon" />
-                </span>
+            <div
+                class="tool"
+                v-for="(data, index) in icons"
+                :key="index"
+                :title="data.title"
+                @click="onClick(data)"
+            >
+                <Icon :icon="data.icon" />
             </div>
         </div>
     </div>
 </template>data
 
-<script>
+<script setup>
 import { Icon } from "@iconify/vue";
+import { useToolStore } from "../stores/tool";
 
-export default {
-    components: { Icon },
+const tool = useToolStore();
 
-    data() {
-        return {
-            icons: [
-                {
-                    icon: "mdi:vector-rectangle",
-                    title: "Rectangle",
-                    visible: 1,
-                },
-                {
-                    icon: "material-symbols:pen-size-2",
-                    title: "Straight Line",
-                    visible: 1,
-                },
-                {
-                    icon: "ri:quill-pen-line",
-                    title: "Free hand",
-                    visible: 1,
-                },
-                {
-                    icon: "ph:eraser-light",
-                    title: "Eraser",
-                    visible: 1,
-                },
-                {
-                    icon: "material-symbols:back-hand",
-                    title: "Hand Tool",
-                    visible: 0,
-                },
-                {
-                    icon: "carbon:zoom-area",
-                    title: "Zoom",
-                    visible: 0,
-                },
-            ],
-        };
+const icons = [
+    {
+        icon: "mdi:vector-rectangle",
+        title: "Rectangle",
     },
-};
+    {
+        icon: "material-symbols:pen-size-2",
+        title: "Straight Line",
+    },
+    {
+        icon: "ri:quill-pen-line",
+        title: "Free hand",
+    },
+    {
+        icon: "ph:eraser-light",
+        title: "Eraser",
+    },
+    {
+        icon: "material-symbols:back-hand",
+        title: "Hand Tool",
+    },
+    {
+        icon: "carbon:zoom-area",
+        title: "Zoom",
+    },
+    {
+        icon: "material-symbols:insert-text",
+        title: "Text",
+    },
+];
+
+function onClick(button) {
+    tool.updateTool(button.title);
+}
 </script>
 
 <style scoped>
 .toolbar-container {
+    position: absolute;
+    left: 0;
+    top: 0;
     height: 100vh;
     width: 80px;
     background: #d9d9d9;
