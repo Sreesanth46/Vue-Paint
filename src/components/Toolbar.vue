@@ -13,14 +13,26 @@
             >
                 <Icon :icon="data.icon" />
             </div>
-            <div class="tool" :style="{ backgroundColor: stroke.color }">
+            <div
+                class="tool"
+                :style="{ backgroundColor: stroke.color }"
+                title="Stroke color"
+            >
                 <Icon icon="mdi:color" />
                 <input
                     type="color"
-                    :value="`white`"
                     @change="strokeColor"
                     class="tool"
                     style="position: absolute; opacity: 0"
+                />
+            </div>
+            <div class="tool" title="Background color">
+                <input
+                    type="color"
+                    value="#ffffff"
+                    @change="changeBackground"
+                    class="tool"
+                    style="position: absolute"
                 />
             </div>
         </div>
@@ -31,11 +43,13 @@
 import { Icon } from "@iconify/vue";
 import { useToolStore } from "../stores/tool";
 import { useStrokeStore } from "../stores/stroke";
+import { useBackgroundStore } from "../stores/background";
 import { ref } from "vue";
 
-const tool = useToolStore();
+const toolStore = useToolStore();
 const { stroke } = useStrokeStore();
 const strokeStore = useStrokeStore();
+const backgroundStore = useBackgroundStore();
 const selectedTool = ref("none");
 
 const icons = [
@@ -75,11 +89,15 @@ function onClick(button) {
     } else {
         selectedTool.value = button.title;
     }
-    tool.updateTool(button.title);
+    toolStore.updateTool(button.title);
 }
 
 function strokeColor(event) {
     strokeStore.updateStrokeColor(event.target.value);
+}
+
+function changeBackground(event) {
+    backgroundStore.updateBackground(event.target.value);
 }
 </script>
 
