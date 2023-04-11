@@ -7,12 +7,21 @@
                 :title="data.title"
                 @click="onClick(data)"
                 class="tool"
+                :style="{
+                    backgroundColor: selectedTool == data.title ? 'grey' : '',
+                }"
             >
                 <Icon :icon="data.icon" />
             </div>
-            <div class="tool">
+            <div class="tool" :style="{ backgroundColor: stroke.color }">
                 <Icon icon="mdi:color" />
-                <input type="color" :value="`white`" @change="strokeColor" />
+                <input
+                    type="color"
+                    :value="`white`"
+                    @change="strokeColor"
+                    class="tool"
+                    style="position: absolute; opacity: 0"
+                />
             </div>
         </div>
     </div>
@@ -22,10 +31,12 @@
 import { Icon } from "@iconify/vue";
 import { useToolStore } from "../stores/tool";
 import { useStrokeStore } from "../stores/stroke";
+import { ref } from "vue";
 
 const tool = useToolStore();
-const stroke = useStrokeStore();
-let selectedTool = "none";
+const { stroke } = useStrokeStore();
+const strokeStore = useStrokeStore();
+const selectedTool = ref("none");
 
 const icons = [
     {
@@ -59,16 +70,16 @@ const icons = [
 ];
 
 function onClick(button) {
-    if (selectedTool == button.title) {
-        selectedTool = "none";
+    if (selectedTool.value == button.title) {
+        selectedTool.value = "none";
     } else {
-        selectedTool = button.title;
+        selectedTool.value = button.title;
     }
     tool.updateTool(button.title);
 }
 
 function strokeColor(event) {
-    stroke.updateStrokeColor(event.target.value);
+    strokeStore.updateStrokeColor(event.target.value);
 }
 </script>
 
@@ -83,7 +94,6 @@ function strokeColor(event) {
 }
 
 .tools-box {
-    /* background: rgb(168, 168, 252); */
     position: absolute;
     top: 80px;
     width: inherit;
