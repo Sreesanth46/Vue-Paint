@@ -14,3 +14,5 @@ cd Vue-Paint
 npm i
 npm run dev
 ```
+
+# [Live Demo](https://vue-paint.sreesanth.me)
